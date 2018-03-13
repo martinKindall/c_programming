@@ -8,8 +8,15 @@ int main()
 {
 	int c;
  
-    while((c=getchar()) != EOF)
+ 	// EOF corresponde a ctrl+d
+    while(c != EOF)
+    {
+        c = getchar();
         putchar(c);
+    }
  
+	printf("\n");
+	printf("cerrando\n");
+
     return 1;
 }
