@@ -11,6 +11,9 @@ int main()
 	putchar(53);
 	putchar(053);
 	putchar(0x3a);
+
+	char d = 0;
+	putchar(d);
  
  	// EOF corresponde a ctrl+d
     while(c != EOF)
