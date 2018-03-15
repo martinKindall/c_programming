@@ -7,6 +7,10 @@
 int main() 
 {
 	int c;
+
+	putchar(53);
+	putchar(053);
+	putchar(0x3a);
  
  	// EOF corresponde a ctrl+d
     while(c != EOF)
