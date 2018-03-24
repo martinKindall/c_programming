@@ -82,8 +82,8 @@ int main()
 	printf("nro %d tiene %d bits en 1\n", num2, bits1(num2));
 	printf("nro %d tiene %d bits en 1\n", num3, bits1_neg(num3));
 
-	unsigned char test = 0x09;
-	printf("antes de rotar a la derecha %u, despues %u\n", test, rotate(test, 3));
+	unsigned char test = 0xF0;
+	printf("antes de rotar a la derecha %u, despues %u\n", test, rotate(test, 4));
 	printf("antes de rotar a la izquierda %u, despues %u\n", test, rotate(test, -3));
 	
 	return 0;
