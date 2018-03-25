@@ -71,6 +71,21 @@ unsigned char rotate(unsigned char c, int bits)
 	return clone;
 }
 
+int posicionBits(int x, int p, int n)
+{
+	int mask = (1 << n) - 1;
+
+	for (int i = 0; i < (32 - n + 1); ++i)
+	{
+		int aux = mask & x;
+		if (!(aux ^ p)) return i;
+		p <<= 1;
+		mask <<= 1;
+	}
+
+	return -1;
+}
+
 int main()
 {
 	int num = 0;
@@ -86,5 +101,11 @@ int main()
 	printf("antes de rotar a la derecha %u, despues %u\n", test, rotate(test, 4));
 	printf("antes de rotar a la izquierda %u, despues %u\n", test, rotate(test, -3));
 	
+	int num4 = 0xC00;
+	int patron = 0x3;
+	int size = 2;
+
+	printf("El numero %d tiene el patron %d en la posicion %d\n", num4, patron, posicionBits(num4, patron, size));
+
 	return 0;
 }
