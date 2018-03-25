@@ -86,6 +86,16 @@ int posicionBits(int x, int p, int n)
 	return -1;
 }
 
+unsigned repBits(unsigned x, int i, int k, unsigned val)
+{
+	unsigned mask = (1 << k) - 1;
+	unsigned newVal = (mask & val) << i;
+	mask = ~(mask << i);
+	unsigned newX = mask & x;
+
+	return newX | newVal;
+}
+
 int main()
 {
 	int num = 0;
@@ -106,6 +116,17 @@ int main()
 	int size = 2;
 
 	printf("El numero %d tiene el patron %d en la posicion %d\n", num4, patron, posicionBits(num4, patron, size));
+
+	unsigned algo = 3000000;   // igual a unsigned int
+	printf("size of %lu\n", sizeof(algo));
+	printf("number %u\n", algo);
+
+	unsigned num5 = 0xFF;
+	int posicion = 4;
+	int nBits = 3;
+	unsigned val = 0x01;
+
+	printf("number %u replaced %d bits in pos %d by val %u and resulted %u\n", num5, nBits, posicion, val, repBits(num5, posicion, nBits, val));
 
 	return 0;
 }
