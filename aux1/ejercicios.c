@@ -111,7 +111,7 @@ int main()
 	printf("antes de rotar a la derecha %u, despues %u\n", test, rotate(test, 4));
 	printf("antes de rotar a la izquierda %u, despues %u\n", test, rotate(test, -3));
 	
-	int num4 = 0xC00;
+	int num4 = 0b1000;
 	int patron = 0x3;
 	int size = 2;
 
