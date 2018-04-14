@@ -16,7 +16,7 @@
 
 uint recortar(uint x, int i, int j)
 {
-	uint auxL = x >> (i + 1);
+	uint auxL = (x >> i) >> 1;
 
 	uint maskR = (1 << j) - 1;
 	uint auxR = x & maskR;
