@@ -58,6 +58,11 @@ int main()
 
 	printf("%d\n", strlen("hello!"));
 
+	char *prueba1 = "holanda";
+	//char aux3[] = prueba1;   // incorrecto
+	char aux3[] = {51, 52, 53};
+	printf("%s\n", aux3);
+
 	return 0;
 }
 
