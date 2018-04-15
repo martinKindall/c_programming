@@ -2,7 +2,7 @@
 
 int main()
 {
-	int a;
+	int a, val1 = 100, val2 = 50;
 
 	printf("%d\n", a);
 	printf("%p\n", &a);
