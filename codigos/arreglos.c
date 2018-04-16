@@ -63,6 +63,13 @@ int main()
 	char aux3[] = {51, 52, 53};
 	printf("%s\n", aux3);
 
+	int arr1[] = {1, 2, 3};
+	char palabra[] = "holas";
+	palabra[0] = 'H';
+	char *palabra2 = "holas";
+	// palabra2[0] = 'H'; // seg fault
+	// arr1 = 
+
 	return 0;
 }
 
