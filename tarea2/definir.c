@@ -39,30 +39,15 @@ void trimwhitespace(char *str)
 	*p = 0;
 }
 
-void insertarDefinicion(char *def, char *dest)
+void insertarString(char *def, char *dest, int size, int terminacion)
 {
 	strcpy(dest, def);
 	int largo = strlen(dest);
-
 	char *ptr = dest + largo;
-
-	if (strlen(dest) < 59)
-	{
-		for (int i = 0; i < 59 - largo; ++i){
-			*ptr = ' ';
-			++ptr;
-		}
-	}
-	*ptr = '\n';
-}
-
-void insertarString(char *def, char *dest, int size)
-{
-	strcpy(dest, def);
-	int largo = strlen(dest);
-
-	char *ptr = dest + largo;
-
+    if (terminacion)
+    {
+        size--;
+    }
 	if (strlen(dest) < size)
 	{
 		for (int i = 0; i < size - largo; ++i){
@@ -70,6 +55,10 @@ void insertarString(char *def, char *dest, int size)
 			++ptr;
 		}
 	}
+    if (terminacion)
+    {
+        *ptr = '\n';
+    }
 }
 
 void definirKeyABB(FILE *file, int linea, char *key, char *definicion)
@@ -96,7 +85,7 @@ void definirKeyABB(FILE *file, int linea, char *key, char *definicion)
     if (cmp == 0)
     {
     	char reemplazo[DEF_WIDTH];
-    	insertarDefinicion(definicion, reemplazo);
+    	insertarString(definicion, reemplazo, DEF_WIDTH, 1);
 
     	strncpy(
     		pBusqueda + 2*INDEX_WIDTH + KEY_WIDTH,
@@ -124,14 +113,14 @@ void definirKeyABB(FILE *file, int linea, char *key, char *definicion)
         char ultima_lin[5];
         sprintf(ultima_lin, "%d", ultima_linea);
 
-    	char reemplazo[INDEX_WIDTH];
-        insertarString(ultima_lin, reemplazo, INDEX_WIDTH);
+    	char current_index[INDEX_WIDTH];
+        insertarString(ultima_lin, current_index, INDEX_WIDTH, 0);
 
         if (dir)
         {
             strncpy(
             pBusqueda + INDEX_WIDTH,
-            reemplazo,
+            current_index,
             INDEX_WIDTH
             );
         }
@@ -139,33 +128,41 @@ void definirKeyABB(FILE *file, int linea, char *key, char *definicion)
         {
             strncpy(
             pBusqueda,
-            reemplazo,
+            current_index,
             INDEX_WIDTH
             );
         }
 
         write_line(file, busqueda, linea);
 
-    	insertarString("-1", reemplazo, INDEX_WIDTH);
+    	insertarString("-1", current_index, INDEX_WIDTH, 0);
 
     	strncpy(
     		pBusqueda,
-    		reemplazo,
+    		current_index,
     		INDEX_WIDTH
     		);
 
     	strncpy(
     		pBusqueda + INDEX_WIDTH,
-    		reemplazo,
+    		current_index,
     		INDEX_WIDTH
     		);
 
-        char reemplazo_2[DEF_WIDTH];
-        insertarDefinicion(definicion, reemplazo_2);
+        char current_def[DEF_WIDTH];
+        insertarString(definicion, current_def, DEF_WIDTH, 1);
         strncpy(
             pBusqueda + 2*INDEX_WIDTH + KEY_WIDTH,
-            reemplazo_2,
+            current_def,
             DEF_WIDTH
+            );
+
+        char current_key[KEY_WIDTH];
+        insertarString(key, current_key, KEY_WIDTH, 0);
+        strncpy(
+            pBusqueda + 2*INDEX_WIDTH,
+            current_key,
+            KEY_WIDTH
             );
 
     	write_line(file, busqueda, ultima_linea);
