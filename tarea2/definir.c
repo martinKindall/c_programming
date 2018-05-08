@@ -119,12 +119,34 @@ void definirKeyABB(FILE *file, int linea, char *key, char *definicion)
 
     if (nodo < 0)
     {
-    	printf("No se encontro, linea actual: %d\n", linea);
     	fseek(file, -LINE_WIDTH, SEEK_END);
     	int ultima_linea = ftell(file)/LINE_WIDTH + 1;
+        char ultima_lin[5];
+        sprintf(ultima_lin, "%d", ultima_linea);
 
     	char reemplazo[INDEX_WIDTH];
-    	insertarString("-5", reemplazo, INDEX_WIDTH);
+        insertarString(ultima_lin, reemplazo, INDEX_WIDTH);
+
+        if (dir)
+        {
+            strncpy(
+            pBusqueda + INDEX_WIDTH,
+            reemplazo,
+            INDEX_WIDTH
+            );
+        }
+        else
+        {
+            strncpy(
+            pBusqueda,
+            reemplazo,
+            INDEX_WIDTH
+            );
+        }
+
+        write_line(file, busqueda, linea);
+
+    	insertarString("-1", reemplazo, INDEX_WIDTH);
 
     	strncpy(
     		pBusqueda,
@@ -137,6 +159,14 @@ void definirKeyABB(FILE *file, int linea, char *key, char *definicion)
     		reemplazo,
     		INDEX_WIDTH
     		);
+
+        char reemplazo_2[DEF_WIDTH];
+        insertarDefinicion(definicion, reemplazo_2);
+        strncpy(
+            pBusqueda + 2*INDEX_WIDTH + KEY_WIDTH,
+            reemplazo_2,
+            DEF_WIDTH
+            );
 
     	write_line(file, busqueda, ultima_linea);
     	return;
