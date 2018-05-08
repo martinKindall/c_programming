@@ -56,9 +56,26 @@ void insertarDefinicion(char *def, char *dest)
 	*ptr = '\n';
 }
 
+void insertarString(char *def, char *dest, int size)
+{
+	strcpy(dest, def);
+	int largo = strlen(dest);
+
+	char *ptr = dest + largo;
+
+	if (strlen(dest) < size)
+	{
+		for (int i = 0; i < size - largo; ++i){
+			*ptr = ' ';
+			++ptr;
+		}
+	}
+}
+
 void definirKeyABB(FILE *file, int linea, char *key, char *definicion)
 {
 	int nodo;
+	int dir;
 	char busqueda[LINE_WIDTH];
 	char* pBusqueda = busqueda;
 
@@ -91,22 +108,38 @@ void definirKeyABB(FILE *file, int linea, char *key, char *definicion)
     	return;
     }
     else if(cmp > 0){
-    	printf("es mayor\n");
     	nodo = atoi(leftNode);
-    	printf("El nodo es: %d\n", nodo);
+    	dir = 0;
     }
     else
     {
-    	printf("es menor\n");
     	nodo = atoi(rightNode);
-    	printf("El nodo es: %d\n", nodo);
+    	dir = 1;
     }
-
-    printf("Raiz: %s\n", searchKey);
 
     if (nodo < 0)
     {
-    	printf("No se encontro\n");
+    	printf("No se encontro, linea actual: %d\n", linea);
+    	fseek(file, -LINE_WIDTH, SEEK_END);
+    	int ultima_linea = ftell(file)/LINE_WIDTH + 1;
+
+    	char reemplazo[INDEX_WIDTH];
+    	insertarString("-5", reemplazo, INDEX_WIDTH);
+
+    	strncpy(
+    		pBusqueda,
+    		reemplazo,
+    		INDEX_WIDTH
+    		);
+
+    	strncpy(
+    		pBusqueda + INDEX_WIDTH,
+    		reemplazo,
+    		INDEX_WIDTH
+    		);
+
+    	write_line(file, busqueda, ultima_linea);
+    	return;
     }
     else
     {
