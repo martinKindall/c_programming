@@ -18,6 +18,17 @@ void read_line(FILE *file, char *line, int i) {
   }
 }
 
+void write_line(FILE *file, char *line, int i) {
+  if (fseek(file, i*LINE_WIDTH, SEEK_SET)!=0) {
+    perror("compare_file_lines");
+    exit(1);
+  }
+  if (fwrite(line, 1, LINE_WIDTH, file)!=LINE_WIDTH) {
+    perror("compare_file_lines");
+    exit(1);
+  }
+}
+
 void trimwhitespace(char *str)
 {
 	char *p = strchr(str, ' ');
@@ -69,8 +80,14 @@ void definirKeyABB(FILE *file, int linea, char *key, char *definicion)
     {
     	char reemplazo[DEF_WIDTH];
     	insertarDefinicion(definicion, reemplazo);
-    	printf("reemplazo: %s\n", reemplazo);
 
+    	strncpy(
+    		pBusqueda + 2*INDEX_WIDTH + KEY_WIDTH,
+    		reemplazo,
+    		DEF_WIDTH
+    		);
+
+    	write_line(file, busqueda, linea);
     	return;
     }
     else if(cmp > 0){
