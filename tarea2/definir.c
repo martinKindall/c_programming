@@ -5,6 +5,7 @@
 #define LINE_WIDTH 100
 #define KEY_WIDTH 20
 #define INDEX_WIDTH 10
+#define DEF_WIDTH 60
 
 void read_line(FILE *file, char *line, int i) {
   if (fseek(file, i*LINE_WIDTH, SEEK_SET)!=0) {
@@ -27,7 +28,24 @@ void trimwhitespace(char *str)
 	*p = 0;
 }
 
-void definirKeyABB(FILE *file, int linea, char *key)
+void insertarDefinicion(char *def, char *dest)
+{
+	strcpy(dest, def);
+	int largo = strlen(dest);
+
+	char *ptr = dest + largo;
+
+	if (strlen(dest) < 59)
+	{
+		for (int i = 0; i < 59 - largo; ++i){
+			*ptr = ' ';
+			++ptr;
+		}
+	}
+	*ptr = '\n';
+}
+
+void definirKeyABB(FILE *file, int linea, char *key, char *definicion)
 {
 	int nodo;
 	char busqueda[LINE_WIDTH];
@@ -49,7 +67,11 @@ void definirKeyABB(FILE *file, int linea, char *key)
 
     if (cmp == 0)
     {
-    	printf("redefinir\n");
+    	char reemplazo[DEF_WIDTH];
+    	insertarDefinicion(definicion, reemplazo);
+    	printf("reemplazo: %s\n", reemplazo);
+
+    	return;
     }
     else if(cmp > 0){
     	printf("es mayor\n");
@@ -64,6 +86,15 @@ void definirKeyABB(FILE *file, int linea, char *key)
     }
 
     printf("Raiz: %s\n", searchKey);
+
+    if (nodo < 0)
+    {
+    	printf("No se encontro\n");
+    }
+    else
+    {
+		definirKeyABB(file, nodo, key, definicion);
+    }
 }
 
 int main(int argc, char **argv) {
@@ -78,5 +109,5 @@ int main(int argc, char **argv) {
 
 	FILE *file= fopen(filename, "r+");
 
-	definirKeyABB(file, 0, key);
+	definirKeyABB(file, 0, key, value);
 }
