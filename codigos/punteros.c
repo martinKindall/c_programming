@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
@@ -42,7 +43,7 @@ int main()
 	printf("%d\n", e[100]);   // no arroja error, pero esta incorrecto, podriamos estar pisando otras memorias
 
 	char *f = malloc(sizeof(char));
-	f[0] = 300;   // char solo tiene tamaño 1 byte, 256 valores
+	// f[0] = 300;   // char solo tiene tamaño 1 byte, 256 valores
 	printf("%c\n", f[0]);   // overflow
 
 	int g[3] = {1, 2, 3};
@@ -51,7 +52,18 @@ int main()
 	int *pointer = NULL;
 
 	printf("%p\n", pointer);   // nil
-	printf("%d\n", *pointer);   // segmentation fault (accediendo al contenido de NULL)
+	// printf("%d\n", *pointer);   // segmentation fault (accediendo al contenido de NULL)
+
+	int algo[10];
+	algo[0] = 1;
+	algo[1] = 99;
+
+	printf("%d\n", algo[1]);
+
+	int* punteros[10];
+	punteros[0] = &algo[1];
+
+	printf("%d\n", *punteros[0]);
 
 	return 0;
 }
