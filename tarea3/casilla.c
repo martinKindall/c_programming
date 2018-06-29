@@ -10,7 +10,6 @@
 
 #include "casilla.h"
 
-
 typedef struct mensaje {
 	void *msg;
 	int pri;
@@ -37,15 +36,29 @@ Casilla nuevaCasilla(){
 	return casilla;
 }
 
-
 void enviar(Casilla c, void *msg, int pri){
-	return;
+	Mensaje *final_msg = malloc(sizeof(struct mensaje));
+	final_msg->msg = msg;
+	final_msg->pri = pri;
+
+	c->cola->ops->agregar(c->cola, (void*)final_msg);
 }
 
 void *recibir(Casilla c){
-	return NULL;
+	Mensaje* objPrioritario = (Mensaje*)c->cola->ops->extraer(c->cola);
+	void* message = objPrioritario->msg;
+	free(objPrioritario);
+
+	return message;
 }
 
 void destruirCasilla(Casilla c){
+	ColaPri auxCola = c->cola;
 
+	while (auxCola->ops->tamano(auxCola)!=0) {
+		auxCola->ops->extraer(auxCola);
+	}
+	auxCola->ops->destruir(auxCola);
+
+	free(c);
 }
