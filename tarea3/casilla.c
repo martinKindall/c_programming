@@ -19,7 +19,7 @@ int compPriorMsg(void *p, void *q) {
 	Mensaje* men1 = (Mensaje*)p;
 	Mensaje* men2 = (Mensaje*)q;
 
-	return men1->pri - men2->pri;
+	return men2->pri - men1->pri;
 }
 
 struct casilla {
