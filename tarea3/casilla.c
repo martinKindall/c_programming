@@ -29,7 +29,7 @@ struct casilla {
 };
 
 Casilla nuevaCasilla(){
-	Casilla casilla = malloc(sizeof(casilla));
+	Casilla casilla = malloc(sizeof(struct casilla));
 	casilla->cola = nuevaColaPriArreglo(100, compPriorMsg);
 	pthread_mutex_init(&(casilla->mutex), NULL);
 
