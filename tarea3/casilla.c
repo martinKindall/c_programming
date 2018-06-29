@@ -13,6 +13,7 @@
 typedef struct mensaje {
 	void *msg;
 	int pri;
+	pthread_cond_t cond_rec;
 } Mensaje;
 
 int compPriorMsg(void *p, void *q) {
@@ -26,7 +27,6 @@ struct casilla {
 	ColaPri cola;
 	pthread_mutex_t mutex;
 	pthread_cond_t cond_env;
-	pthread_cond_t cond_rec;
 };
 
 Casilla nuevaCasilla(){
@@ -34,7 +34,6 @@ Casilla nuevaCasilla(){
 	casilla->cola = nuevaColaPriArreglo(100, compPriorMsg);
 	pthread_mutex_init(&(casilla->mutex), NULL);
 	pthread_cond_init(&(casilla->cond_env), NULL);
-	pthread_cond_init(&(casilla->cond_rec), NULL);
 
 	return casilla;
 }
@@ -44,11 +43,13 @@ void enviar(Casilla c, void *msg, int pri){
 	Mensaje *final_msg = malloc(sizeof(struct mensaje));
 	final_msg->msg = msg;
 	final_msg->pri = pri;
+	pthread_cond_init(&(final_msg->cond_rec), NULL);
 
 	c->cola->ops->agregar(c->cola, (void*)final_msg);
 	pthread_cond_broadcast(&c->cond_env);
 
-	pthread_cond_wait(&c->cond_rec, &c->mutex);
+	pthread_cond_wait(&(final_msg->cond_rec), &c->mutex);
+	free(final_msg);
 	pthread_mutex_unlock(&c->mutex);
 }
 
@@ -59,8 +60,7 @@ void *recibir(Casilla c){
 
 	Mensaje* objPrioritario = (Mensaje*)c->cola->ops->extraer(c->cola);
 	void* message = objPrioritario->msg;
-	free(objPrioritario);
-	pthread_cond_broadcast(&c->cond_rec);
+	pthread_cond_broadcast(&(objPrioritario->cond_rec));
 	pthread_mutex_unlock(&c->mutex);
 
 	return message;
