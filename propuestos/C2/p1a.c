@@ -4,7 +4,7 @@ double integral(Funcion f, void *p, double xi, double xf, int n)
 {
 	double h = (xf - xi)/n;
 
-	double primerTermino = (f(p, xi) + f(p, xf)) / 2;
+	double primerTermino = (f(p, xi) + f(p, xf)) / 2.0;
 
 	double segundoTermino = 0;
 
