@@ -53,6 +53,18 @@ void enviar(Casilla c, void *msg, int pri){
 	pthread_mutex_unlock(&c->mutex);
 }
 
+// void enviar_alternativa(Casilla c, void *msg, int pri){
+// 	pthread_mutex_lock(&c->mutex);
+// 	Mensaje final_msg = {msg, pri};
+// 	pthread_cond_init(&(final_msg.cond_rec), NULL);
+
+// 	c->cola->ops->agregar(c->cola, (void*)&final_msg);
+// 	pthread_cond_broadcast(&c->cond_env);
+
+// 	pthread_cond_wait(&(final_msg.cond_rec), &c->mutex);
+// 	pthread_mutex_unlock(&c->mutex);
+// }
+
 void *recibir(Casilla c){
 	pthread_mutex_lock(&c->mutex);
 	while(c->cola->ops->tamano(c->cola) <= 0)
