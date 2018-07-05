@@ -57,7 +57,7 @@ void *fun_emisor2(void *ptr) {
 void *fun_emisor3(void *ptr) {
   usleep(4*STEP);
   printf("emisor 3: emision (hito 4)\n");
-  enviar(c2, m4, 2);
+  enviar(c2, m4, 3);
   printf("emisor 3: mensaje recibido\n");
 
   return NULL;
