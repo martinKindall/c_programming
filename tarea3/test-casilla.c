@@ -1,4 +1,4 @@
-#define _BSD_SOURCE 1
+#define _XOPEN_SOURCE 500
 
 #include <pthread.h>
 #include <unistd.h>
@@ -127,6 +127,14 @@ void *fun_prod(void *ptr) {
   }
   return NULL;
 }
+
+void checked_create(pthread_t *pt, const pthread_attr_t *a,
+                    void *(*f)(void *), void *p) {
+  if (pthread_create(pt, a, f, p)!=0) {
+    perror("pthread_create");
+    exit(1);
+  }
+}
   
 void *fun_cons(void *ptr) {
   Param *pparam= ptr;
@@ -146,10 +154,10 @@ int main() {
   c2= nuevaCasilla();
 
   pthread_t receptor, emisor1, emisor2, emisor3;
-  pthread_create(&receptor, NULL, fun_receptor, NULL);
-  pthread_create(&emisor1, NULL, fun_emisor1, NULL);
-  pthread_create(&emisor2, NULL, fun_emisor2, NULL);
-  pthread_create(&emisor3, NULL, fun_emisor3, NULL);
+  checked_create(&receptor, NULL, fun_receptor, NULL);
+  checked_create(&emisor1, NULL, fun_emisor1, NULL);
+  checked_create(&emisor2, NULL, fun_emisor2, NULL);
+  checked_create(&emisor3, NULL, fun_emisor3, NULL);
 
   pthread_join(receptor, NULL);
   pthread_join(emisor1, NULL);
@@ -175,8 +183,8 @@ int main() {
     param_prods[i].c= c3;
     param_prods[i].pri= i;
     param_cons[i].c= c3;
-    pthread_create(&prods[i], NULL, fun_prod, &param_prods[i]);
-    pthread_create(&cons[i], NULL, fun_cons, &param_cons[i]);
+    checked_create(&prods[i], NULL, fun_prod, &param_prods[i]);
+    checked_create(&cons[i], NULL, fun_cons, &param_cons[i]);
   }
 
   long prod_sum= 0;
