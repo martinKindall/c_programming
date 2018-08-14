@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include <stdio.h>
 
 #define BUFSIZE 8192
 
@@ -22,7 +23,11 @@ int main()
 	char bufOutput[50];
 	strcpy(bufOutput, "hola mundo");
 
-	strcat(bufOutput, " talcahuano\n");
+	char fin = EOF;
+
+	strcat(bufOutput, "pasando");
+	strcat(bufOutput, &fin);
+	strcat(bufOutput, "pasando");
 
 	write(1, bufOutput, 50);
 
