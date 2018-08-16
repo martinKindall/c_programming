@@ -1,0 +1,22 @@
+// Para poder usar los threads
+#include <pthread.h>
+
+... otros #include ...
+
+// Los encabezados pedidos en el enunciado de la tarea
+#include "casilla.h"
+
+// La cola de prioridades dada
+#include "colapri.h"
+#include "colapri-arreglo.h"
+
+// El tipo Casilla es definido en casilla.h como:
+// typedef struct casilla *Casilla;
+// Es decir es un puntero a la siguiente estructura
+
+struct casilla {
+  ... implementa la casilla de correo en esta estructura ...
+};
+
+... programa a continuacion las 4 funciones pedidas mas otras funciones
+... que Ud. requiera
