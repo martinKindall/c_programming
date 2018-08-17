@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #define BUFSIZE 8192
+#define BUF_SIZE 10
 
 int main()
 {
@@ -27,9 +28,30 @@ int main()
 
 	strcat(bufOutput, "pasando");
 	strcat(bufOutput, &fin);
-	strcat(bufOutput, "pasando");
+	strcat(bufOutput, "pasando\n");
 
 	write(1, bufOutput, 50);
+
+
+	char buf[BUF_SIZE];
+
+	int cnt;
+
+	while ((cnt= read(0, buf, BUF_SIZE)) > 0) {
+      if (write(1, buf, cnt) != cnt) {
+        fprintf(stdout, "Fallo el write al servidor\n");
+        break;
+      }
+    }
+
+    printf("Sali del ciclo\n");
+
+    cnt= read(0, buf, BUF_SIZE);
+
+    if (write(1, buf, cnt) != cnt) 
+    {
+	    fprintf(stdout, "Fallo el write al servidor\n");
+	}
 
 	return 0;
 }
