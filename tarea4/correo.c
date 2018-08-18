@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "jsocket.h"
 #include "casilla.h"
@@ -26,21 +27,22 @@ void* serv(void* p)
 	{
 		char* msg = recibir(cas);
 		sendstr(s, msg);
-		free(msg);
 	}
 	else
 	{
 		char* prior = getstr(s);
 		int prioridad = atoi(prior);
-		char* mensaje = getstr(s);
+		free(prior);
 
-		enviar(cas, mensaje, prioridad);
+		char* mensaje = getstr(s);
+		char mensajeCpy[strlen(mensaje)+1];
+		strcpy(mensajeCpy, mensaje);
+		free(mensaje);
+
+		enviar(cas, mensajeCpy, prioridad);
 
 		char close = '1';
 		write(s, &close, 1);
-
-		free(prior);
-		free(mensaje);
 	}
 
 	return NULL;
