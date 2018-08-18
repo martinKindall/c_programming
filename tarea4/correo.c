@@ -8,6 +8,7 @@
 
 #include "jsocket.h"
 #include "casilla.h"
+#include "util.h"
 
 typedef void *(*Thread_fun)(void *);
 
@@ -18,11 +19,15 @@ void* serv(void* p)
 {
 	intptr_t s2 = (intptr_t) p;
 
+	char* msg = getstr(s2);
+	printf("%s\n", msg);
+	free(msg);
+
 	return NULL;
 }
 
 
-int main(int argc, char const *argv[])
+int main(int argc, char** argv)
 {
 	if (argc != 2)
 	{
