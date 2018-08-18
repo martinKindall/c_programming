@@ -17,11 +17,31 @@ Casilla cas;
 
 void* serv(void* p) 
 {
-	intptr_t s2 = (intptr_t) p;
+	intptr_t s = (intptr_t) p;
 
-	char* msg = getstr(s2);
-	printf("%s\n", msg);
-	free(msg);
+	char modo;
+	read(s, &modo, 1);
+
+	if (modo == 'r')
+	{
+		char* msg = recibir(cas);
+		sendstr(s, msg);
+		free(msg);
+	}
+	else
+	{
+		char* prior = getstr(s);
+		int prioridad = atoi(prior);
+		char* mensaje = getstr(s);
+
+		enviar(cas, mensaje, prioridad);
+
+		char close = '1';
+		write(s, &close, 1);
+
+		free(prior);
+		free(mensaje);
+	}
 
 	return NULL;
 }
@@ -29,6 +49,8 @@ void* serv(void* p)
 
 int main(int argc, char** argv)
 {
+	cas = nuevaCasilla();
+
 	if (argc != 2)
 	{
 		printf("error de uso.\n");

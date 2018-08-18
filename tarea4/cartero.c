@@ -9,14 +9,20 @@
 #include "jsocket.h"
 #include "util.h"
 
+
+void mostrarUso()
+{
+	printf("Error de uso\n");
+	printf("./cartero r\n");
+	printf("./cartero e <prioridad> <mensaje>\n");
+	exit(1);
+}
+
 int main(int argc, char** argv)
 {
 	if (argc > 4 || argc < 1)
 	{
-		printf("Error de uso\n");
-		printf("./cartero r\n");
-		printf("./cartero e <prioridad> <mensaje>\n");
-		exit(1);
+		mostrarUso();
 	}
 
 	char modo = *argv[1];
@@ -29,14 +35,31 @@ int main(int argc, char** argv)
 		exit(1);
 	}
 
+	write(s, &modo, 1);
+
 	if (modo == 'r')
 	{
-		sendstr(s, "holanda");
+		char* msj = getstr(s);
+		printf("%s\n", msj);
+		free(msj);
+
+		return 0;
 	}
+
 	else if (modo == 'e')
 	{
-		int prioridad = atoi(argv[2]);
+		char* prioridad = argv[2];
 		char* mensaje = argv[3];
+
+		sendstr(s, prioridad);
+		sendstr(s, mensaje);
+
+		char resp;
+		leer(s, &resp, 1);
+	}
+	else
+	{
+		mostrarUso();
 	}
 
 	return 0;
